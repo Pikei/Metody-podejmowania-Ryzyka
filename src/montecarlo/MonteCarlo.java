@@ -92,4 +92,40 @@ public class MonteCarlo {
     private boolean isNewBetter() {
         return f(newBest) < f(oldBest);
     }
+
+    public int getDimensions() {
+        return dimensions;
+    }
+
+    public double[][] getX() {
+        return x;
+    }
+
+    public double[] getOldBest() {
+        return oldBest;
+    }
+
+    public double[] getNewBest() {
+        return newBest;
+    }
+
+    public double[] getResults() {
+        return results;
+    }
+
+    public int getIterations() {
+        return iterations;
+    }
+
+    public int getK() {
+        return k;
+    }
+
+    public void setK(int k) {
+        this.k = k;
+    }
+
+    public Random getRand() {
+        return rand;
+    }
 }
