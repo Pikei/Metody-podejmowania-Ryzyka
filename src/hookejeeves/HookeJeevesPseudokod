@@ -1,5 +1,7 @@
+xStart = [100]
+k = 1.5
+e = 0.02
 procedure HookeJeeves()
-    xStart = [100]
     for i from 0 to length(xStart) - 1
         xStart[i] = 1
     end for
@@ -46,5 +48,4 @@ procedure krokRoboczy()
     else
         x = tempArray
         k *= 0.2
-
 end procedure

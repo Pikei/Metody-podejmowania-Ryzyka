@@ -1,4 +1,4 @@
-
+Oznaczenia:
 ek (k=1, 2, ..., N) – k-ty wersor N liniowo niezależnych, ortogonalnych wektorów (bazy)
 v – aktualna długość kroku (v>0)
 v0 – początkowa długość kroku (stała)
