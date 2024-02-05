@@ -8,18 +8,20 @@ x1 – potencjalne nowe przybliżone rozwiązanie
 F1 – wartość F(x1)
 
 Algorytm:
-F2 := F(x), x0 := x, F0 := F2
-v := v0, k := 1
-x1 := x + vek
-F1 := F(x1)
-jeżeli F1<F2 (krok był pomyślny) to x := x1 i F2 := F1 i przejdź do 9, w przeciwnym razie idź do pkt. 6
-x1 := x - vek (próba wykonania kroku w przeciwną stronę)
-F1 := F(x1)
-jeżeli F1 < F2 (krok był pomyślny) to x := x1 i F2 := F1
-jeżeli k < N to k:=k+1 i przejdź do pkt. 3 (są jeszcze nie zbadane kierunki)
-jeżeli F2 < F1 (jakiś krok został wykonany) to x1:=x0, x0:=x, F0:=F2 i wykonaj etap roboczy:
-x := x0 + 1,5(x - x1)
-następnie: F2 := F(x), v := 1,25v (zwiększ współczynnik kroku) i przejdź do 12.
-W przeciwnym razie (F2 ≥ F1) idź do pkt. 11
-jeżeli wykonano etap roboczy w poprzedniej iteracji to: x := x0, F2 := F0 i przejdź do 12 (cofamy się do poprzedniego rozważanego punktu gdyż etap roboczy był nie pomyślny), w przeciwnym razie zmniejsz długość kroku (jeśli nie jest zbyt krótki) tzn. jeżeli v > ε to v := 0,2v i idź do pkt. 2.
-jeżeli v > ε (krok nie jest jeszcze zbyt mały) idź do 2. W przeciwnym razie zakończ: w punkcie x (z dokładnością do ε) znaleziono minimum funkcji wynoszące F(x).
+1: F2 := F(x), x0 := x, F0 := F2
+2: v := v0, k := 1
+3: x1 := x + vek
+4: F1 := F(x1)
+5: jeżeli F1<F2 (krok był pomyślny) to x := x1 i F2 := F1 i przejdź do 9, w przeciwnym razie idź do pkt. 6
+6: x1 := x - vek (próba wykonania kroku w przeciwną stronę)
+7: F1 := F(x1)
+8: jeżeli F1 < F2 (krok był pomyślny) to x := x1 i F2 := F1
+9: jeżeli k < N to k:=k+1 i przejdź do pkt. 3 (są jeszcze nie zbadane kierunki)
+10: jeżeli F2 < F1 (jakiś krok został wykonany) to x1:=x0, x0:=x, F0:=F2 i wykonaj etap roboczy:
+    x := x0 + 1,5(x - x1)
+    następnie: F2 := F(x), v := 1,25v (zwiększ współczynnik kroku) i przejdź do 12.
+    W przeciwnym razie (F2 ≥ F1) idź do pkt. 11
+11: jeżeli wykonano etap roboczy w poprzedniej iteracji to: x := x0, F2 := F0 i przejdź do 12
+    (cofamy się do poprzedniego rozważanego punktu gdyż etap roboczy był nie pomyślny), w przeciwnym razie zmniejsz długość kroku
+    (jeśli nie jest zbyt krótki) tzn. jeżeli v > ε to v := 0,2v i idź do pkt. 2.
+12: jeżeli v > ε (krok nie jest jeszcze zbyt mały) idź do 2. W przeciwnym razie zakończ: w punkcie x (z dokładnością do ε) znaleziono minimum funkcji wynoszące F(x).
