@@ -8,58 +8,58 @@ public class HookeJeeves {
         algorytm();
     }
 
-    private final double[] xStart = new double[4];
-    private final double[] x = new double[xStart.length];
-    private double k = 1.5;
-    private final double e = 0.02;
+    private final double[] xStart = new double[4];          //punkt startowy, deklaracja wymiarów (x,y,z,...)
+    private final double[] x = new double[xStart.length];   //punkt, który będzie się poruszać, tyle samo współrzędnych co punkt startowy
+    private double k = 1.5;                                 //krok
+    private final double e = 0.02;                          //dokładność rozwiązania
 
-    private double f(double[] x) {
+    private double f(double[] x) {                          //funkcja
         return IntStream.range(0, x.length).mapToDouble(i -> (i + 2) * Math.pow(x[i], (i))).sum();
     }
 
     private void algorytm() {
-        Arrays.fill(xStart, 1);
+        Arrays.fill(xStart, 1);                 //początek z punktu (1,1,1,...)
         Arrays.setAll(x, i -> xStart[i]);
         do {
-            krokProbny();
-            krokRoboczy();
+            krokProbny();                           //wykonanie kroku próbnego
+            krokRoboczy();                          //wykonanie kroku roboczego
             if (f(x) < f(xStart))
-                Arrays.setAll(xStart, i -> x[i]);
-            print();
-        } while (k > e);
-        printResult();
+                Arrays.setAll(xStart, i -> x[i]);   //jeśli po wykonaniu kroku punkt jest lepszy to zapisz jego wartość jako aktualną
+            print();                                //wypisanie aktualnego położenia
+        } while (k > e);                            //pętla będzie się wykonywać tak długo, dopóki krok będzie większy od e
+        printResult();                              //wypisanie wyniku końcowego
     }
 
     private void krokProbny() {
-        double v = k;
-        for (int i = 0; i < x.length; i++) {
-            x[i] += k;
-            if (f(x) < f(xStart)) {
-                k = v;
-                continue;
+        double v = k;                               //zapisz aktualną wartość kroku
+        for (int i = 0; i < x.length; i++) {        //dla wszystkich wymiarów
+            x[i] += k;                              //zmień współrzędną osi o krok
+            if (f(x) < f(xStart)) {                 //jeśli nowy punkt jest lepszty niż poprzedni
+                k = v;                              //przywróć poprzednią wartość kroku
+                continue;                           //przejdź do kolejnej współrzędnej na osi
             }
-            x[i] -= 2 * k;
-            if (f(x) < f(xStart)) {
-                k = v;
-                continue;
+            x[i] -= 2 * k;                          //jeśli zwiększenie współrzędnej nie było lepsze to zmniejsz współrzędną o krok
+            if (f(x) < f(xStart)) {                 //jeśli nowy punkt jest lepszty niż poprzedni
+                k = v;                              //przywróć poprzednią wartość kroku
+                continue;                           //przejdź do kolejnej współrzędnej na osi
             }
-            x[i] = xStart[i];
-            if (k > e) {
-                k *= 0.2;
-                i--;
-            } else k = v;
+            x[i] = xStart[i];                       //jeśli krok w żadną ze stron nie był pomyślny przywróć poprzednią wartość współrzędnej
+            if (k > e) {                            //jeśli krok jest większy niż e
+                k *= 0.2;                           //zmniejsz krok
+                i--;                                //ponów dla tej samej współrzędnej powyższe działania ze zmniejszonym krokiem
+            } else k = v;                           //jeśli krok jest mniejszy niż e, przywróć początkową wartość kroku i przejdź do następnej współrzędnej
         }
     }
 
     private void krokRoboczy() {
-        double v = k;
-        double[] tempArray = new double[x.length];
+        double v = k;                                                   //zapisz aktualną wartość kroku
+        double[] tempArray = new double[x.length];                      //utwórz tymczasowy punkt, o współrzędnych x
         Arrays.setAll(tempArray, i -> x[i]);
-        Arrays.setAll(x, i -> xStart[i] + v * (x[i] - xStart[i]));
-        if (f(x) < f(tempArray)) k *= 1.25;
+        Arrays.setAll(x, i -> xStart[i] + v * (x[i] - xStart[i]));      //wykonaj krok po wektorze o długości kroku
+        if (f(x) < f(tempArray)) k *= 1.25;                             //jeśli krok był udany zwiększ wartość kroku
         else {
-            Arrays.setAll(x, i -> tempArray[i]);
-            k *= 0.2;
+            Arrays.setAll(x, i -> tempArray[i]);                        //jeśli nie przywróć poprzednie współrzędne
+            k *= 0.2;                                                   //zmniejsz wartość kroku
         }
     }
 
