@@ -1,5 +1,3 @@
-package hookejeeves;
-
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
@@ -13,7 +11,7 @@ public class HookeJeeves {
     private double k = 1.5;                                 //krok
     private final double e = 0.02;                          //dokładność rozwiązania
 
-    private double f(double[] x) {                          //funkcja
+    private double f(double[] x) {                          //funkcja f(x) = Σ (i+2)*xi^i
         return IntStream.range(0, x.length).mapToDouble(i -> (i + 2) * Math.pow(x[i], (i))).sum();
     }
 

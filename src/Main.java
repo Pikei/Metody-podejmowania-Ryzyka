@@ -1,7 +1,3 @@
-import hookejeeves.HookeJeeves;
-import idiotoodporne.*;
-import montecarlo.MonteCarlo;
-
 import java.util.Scanner;
 
 public class Main {
@@ -10,12 +6,11 @@ public class Main {
         System.out.println("Ahh shit. Here we go again...");
         System.out.println("1. Monte Carlo");
         System.out.println("2. Hooke Jeeves");
+        System.out.println("3. Spadek względem współrzędnych");
         switch (input.next()) {
-            case "1" -> {
-                new MonteCarlo();
-//                new MC();
-            }
+            case "1" -> {new MonteCarlo();}
             case "2" -> {new HookeJeeves();}
+            case "3" -> {new SpadekWWspolrzednych();}
         }
     }
 }
