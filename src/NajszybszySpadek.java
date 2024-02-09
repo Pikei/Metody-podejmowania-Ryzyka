@@ -32,11 +32,9 @@ public class NajszybszySpadek {
         // z założenia pod więcej wymiarów, przykładowo jakby było dla 100 wymiarów.
         // Aktualna funkcja operuje na 2 współrzędnych, ale odpowiednio modyfikując zwracane wartości metoda zwróci pochodną zarówno po x1, x50, czy x100
         if (index == 0) {
-            double v = 4 * x[0] - 6 + 2 * x[1];
-            return v;
+            return 4 * x[0] - 6 + 2 * x[1];
         } else if (index == x.length-1) {
-            double v = 2 * x[x.length - 2] + 2 * x[x.length - 1] - 1;
-            return v;
+            return 2 * x[x.length - 2] + 2 * x[x.length - 1] - 1;
         } else return 0;
     }
 
