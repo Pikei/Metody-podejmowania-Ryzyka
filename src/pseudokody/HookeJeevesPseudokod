@@ -44,8 +44,8 @@ procedure krokRoboczy()
         x[i] = xStart[i] + v * (x[i] - xStart[i])
     end for
     if f(x) < f(tempArray)
-        k *= 1.25
+        k = k * 1.25
     else
         x = tempArray
-        k *= 0.2
+        k = k * 0.2
 end procedure

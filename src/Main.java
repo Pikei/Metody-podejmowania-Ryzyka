@@ -9,12 +9,14 @@ public class Main {
         System.out.println("3. Spadek względem współrzędnych");
         System.out.println("4. Gauss-Seidel");
         System.out.println("5. Najszybszy spadek");
+        System.out.println("6. Sumulowane wyżarzanie");
         switch (input.next()) {
             case "1" -> new MonteCarlo();
             case "2" -> new HookeJeeves();
             case "3" -> new SpadekWWspolrzednych();
             case "4" -> new Gauss();
             case "5" -> new NajszybszySpadek();
+            case "6" -> new SymulowaneWyzarzannie();
         }
     }
 }
