@@ -1,3 +1,5 @@
+import algorytmgenetyczny.Genetyczny;
+
 import java.util.Scanner;
 
 public class Main {
@@ -10,6 +12,7 @@ public class Main {
         System.out.println("4. Gauss-Seidel");
         System.out.println("5. Najszybszy spadek");
         System.out.println("6. Sumulowane wyżarzanie");
+        System.out.println("7. Algorytm genetyczny");
         switch (input.next()) {
             case "1" -> new MonteCarlo();
             case "2" -> new HookeJeeves();
@@ -17,6 +20,7 @@ public class Main {
             case "4" -> new Gauss();
             case "5" -> new NajszybszySpadek();
             case "6" -> new SymulowaneWyzarzannie();
+            case "7" -> new Genetyczny();
         }
     }
 }
