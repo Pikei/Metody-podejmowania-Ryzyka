@@ -1,7 +1,6 @@
 package algorytmgenetyczny;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -9,120 +8,113 @@ public class Genetyczny {
     private final int dimentions = 2;               //liczba wymiarów
     private final int populationNumber = 100;       //liczebność populacji
     private final double e = 0.02;                 //tolerancja błędu
-    private final double[] bestValue = new double[populationNumber];
-    private final HashMap<Integer, Point> population = new HashMap<>();
-    private final HashMap<Integer, Point> newPopulation = new HashMap<>();
+    private final Point[] population = new Point[populationNumber];
+    private final Point[] newPopulation = new Point[populationNumber];
+
     private final Random rand = new Random();
 
     public Genetyczny() {
         generatePopulation();
-        int bestOldIndex, bestNewIndex = 0;
-//        Arrays.setAll(bestValue, i -> rabdomDouble(-1000, 1000));
-//        do {
-        for (int j = 0; j < 100000; j++) {
-            if (j == 90000)
-                System.out.println();
-            newPopulation.putAll(population);
+        IntStream.range(0, newPopulation.length).forEach(i -> newPopulation[i] = new Point(population[i].getX(), population[i].getValue()));
+        int bestOldIndex, bestNewIndex, counter = 0;
+        do {
             bestOldIndex = findBest(population);
             newGeneration();
             crossover();
-            IntStream.range(0, populationNumber).forEach(i -> newPopulation.get(i).setValue(f(newPopulation.get(i).getX())));
+            IntStream.range(0, populationNumber).forEach(i -> newPopulation[i].setValue(f(newPopulation[i].getX())));
             bestNewIndex = findBest(newPopulation);
-            compareBest(bestOldIndex, bestNewIndex);
-            bestValue[0] = newPopulation.get(bestNewIndex).getValue();
-            printStep(bestNewIndex);
-
-        }
-//            bestValue[j] = newPopulation.get(bestNewIndex).getValue();
-//            j++;
-//            if (j >= populationNumber)
-//                j=0;
-//        } while (!exit(j));
+            compare(bestOldIndex, bestNewIndex);
+            for (int i = 0; i < population.length; i++) {
+                population[i].setValue(newPopulation[i].getValue());
+                population[i].setX(newPopulation[i].getX());
+            }
+//            printStep(bestNewIndex);
+            counter ++;
+        } while (!exit(bestNewIndex, counter));
         printResult(bestNewIndex);
     }
+
 
     private void generatePopulation() {
         for (int i = 0; i < populationNumber; i++) {
             double[] temp = new double[dimentions];
             Arrays.setAll(temp, j -> rabdomDouble(-500, 500));
-            population.put(i, new Point(temp, f(temp)));
+            population[i] = new Point(temp, f(temp));
         }
     }
 
-    private int findBest(HashMap<Integer, Point> population) {
-        double best = population.get(0).getValue();
+    private int findBest(Point[] population) {
+        double best = population[0].getValue();
         int index = 0;
-        for (int i = 0; i < population.size(); i++) {
-            if(population.get(i).getValue() < best) {
-                best = population.get(i).getValue();
+        for (int i = 0; i < population.length; i++) {
+            if(population[i].getValue() < best) {
+                best = population[i].getValue();
                 index = i;
             }
         }
         return index;
     }
-
     private int tournament(int contestantsNumber) {
         int[] temp = new int[contestantsNumber];
         Arrays.setAll(temp, i -> rand.nextInt(100));
         int best = temp[0];
         for (int i : temp) {
-            if (population.get(best).getValue() < population.get(i).getValue()) {
+            if (population[best].getValue() < population[i].getValue()) {
                 best = i;
             }
         }
         return best;
     }
     private void newGeneration() {
+        int index;
         for (int i = 0; i < populationNumber; i++) {
-            newPopulation.put(i, population.get(tournament(10)));
+            index = tournament(4);
+            newPopulation[i] = new Point(population[index].getX(),population[index].getValue());
         }
     }
-    private void compareBest(int oldIndex, int newIndex) {
-        if (population.get(oldIndex).getValue() < newPopulation.get(newIndex).getValue()) {
-            newPopulation.get(newIndex).setX(population.get(oldIndex).getX());
-            newPopulation.get(newIndex).setValue(population.get(oldIndex).getValue());
+    private void compare(int oldIndex, int newIndex) {
+        if (population[oldIndex].getValue() < newPopulation[newIndex].getValue()) {
+            newPopulation[newIndex].setX(population[oldIndex].getX());
+            newPopulation[newIndex].setValue(population[oldIndex].getValue());
         }
     }
     private void crossover(){
-        for (int i = 0; i < newPopulation.size(); i+=2) {
+        for (int i = 0; i < newPopulation.length; i+=2) {
             if (rand.nextDouble() <= 0.4) {
                 double[] temp = new double[dimentions];
                 double[] temp2 = new double[dimentions];
                 for (int j = 0; j <= dimentions/2-1; j++) {
-                    temp[j] = newPopulation.get(i).getX()[j];
-                    temp2[j] = newPopulation.get(i+1).getX()[j];
+                    temp[j] = newPopulation[i].getX()[j];
+                    temp2[j] = newPopulation[i+1].getX()[j];
                 }
                 for (int j = dimentions/2; j<dimentions; j++) {
-                    temp[j] = newPopulation.get(i+1).getX()[j];
-                    temp2[j] = newPopulation.get(i).getX()[j];
+                    temp[j] = newPopulation[i+1].getX()[j];
+                    temp2[j] = newPopulation[i].getX()[j];
                 }
                 if (rand.nextDouble() < 0.2) {
-                    Arrays.setAll(temp, j -> temp[j]+rabdomDouble(-0.2,0.2));
-                    Arrays.setAll(temp2, j -> temp2[j]+rabdomDouble(-0.2,0.2));
+                    Arrays.setAll(temp, j -> temp[j]*=rabdomDouble(-1,1));
+                    Arrays.setAll(temp2, j -> temp2[j]*=rabdomDouble(-1,1));
                 }
-                newPopulation.get(i).setX(temp);
-                newPopulation.get(i+1).setX(temp2);
+                newPopulation[i].setX(temp);
+                newPopulation[i+1].setX(temp2);
             }
         }
     }
 
-    private boolean exit(int i) {
-        if(Math.abs(Arrays.stream(bestValue).average().getAsDouble()) - Math.abs(bestValue[i]) < e)
+    private boolean exit(int index, int counter) {
+        if (counter == 1000000){
+            System.out.println("Program zakończył się po 1mln iteracji");
+            System.out.println("Znalezione rozwiązanie jest bliskie prawdy ale wykracza poza zakres +/- " + e + " od rzeczywistego rozwiązania.");
+            System.out.println("Rzeczywiste rozwiązanie to -4.75, w punkcie (2.5, -2)");
             return true;
-//        if (population.get(oldIndex).getValue() < newPopulation.get(newIndex).getValue()) {
-//            newPopulation.get(newIndex).setX(population.get(oldIndex).getX());
-//            newPopulation.get(newIndex).setValue(population.get(oldIndex).getValue());
-//        }
-//        if (Math.sqrt(Math.pow(temp,2)-Math.pow(bestValue, 2)) < e) {
-//            System.out.println("CHUUUUUUUUUUUUUUJ");
-//            return true;
-//        } return false;
-//        for (int i = 0; i < newPopulation.size(); i++) {
-//            if (Math.abs(Math.abs(bestValue)-Math.abs(newPopulation.get(i).getValue())) < e ) {
-//                count ++;
-//            }
-//        }
-//        return count == newPopulation.size();
+        }
+        //chrzanię to inaczej niż iteracyjnie się nie da albo jeśli się realnie zna wartość
+        double realValue = -4.75;
+        if (Math.abs(Math.abs(newPopulation[index].getValue()) - Math.abs(realValue)) <= e){
+            System.out.println("Program zakończył po " + counter + " iteracjach znajdując rozwiązanie w granicach +/- " + e + " od rzeczywistego rozwiązania.");
+            System.out.println("Rzeczywiste rozwiązanie to -4.75, w punkcie (2.5, -2)");
+            return true;
+        }
         return false;
     }
 
@@ -135,10 +127,10 @@ public class Genetyczny {
         return rand.nextDouble() * (max - min) + min;
     }
     private void printResult(int best) {
-        System.out.println("Znaleziono minimum funkcji o wartości: " + newPopulation.get(best).getValue() + " w punkcie (" +  newPopulation.get(best).getX()[0] + ", " + newPopulation.get(best).getX()[1] + ")");
+        System.out.println("Znaleziono minimum funkcji o wartości: " + newPopulation[best].getValue() + " w punkcie (" +  newPopulation[best].getX()[0] + ", " + newPopulation[best].getX()[1] + ")");
     }
     private void printStep(int best) {
-        System.out.println("Aktualna wartość funkcji : " + newPopulation.get(best).getValue() + " w punkcie (" +  newPopulation.get(best).getX()[0] + ", " + newPopulation.get(best).getX()[1] + ")");
+        System.out.println("Aktualna wartość funkcji : " + newPopulation[best].getValue() + " w punkcie (" +  newPopulation[best].getX()[0] + ", " + newPopulation[best].getX()[1] + ")");
     }
 
     /*
