@@ -7,14 +7,6 @@ public class Particle {
     private double[] vector;
     private double value;
 
-//    public Particle(double[] x, double[] personalBest, double[] globalBest, double[] vector, double value) {
-//        this.x = x;
-//        this.personalBest = personalBest;
-//        this.globalBest = globalBest;
-//        this.vector = vector;
-//        this.value = value;
-//    }
-
     public Particle(double[] x, double[] personalBest, double value) {
         this.x = x;
         this.personalBest = personalBest;

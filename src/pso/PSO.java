@@ -52,8 +52,8 @@ public class PSO {
                 swarm[i].setPersonalBest(best);
             }
         }
-
-    }private void findGlobalBest() {
+    }
+    private void findGlobalBest() {
         double[] best = new double[dimensions];
         if (swarm[0].getGlobalBest() == null) {
             for (int i = 0; i < best.length; i++) {

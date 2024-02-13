@@ -15,6 +15,7 @@ public class Main {
         System.out.println("6. Sumulowane wyżarzanie");
         System.out.println("7. Algorytm genetyczny");
         System.out.println("8. PSO");
+        System.out.println("9. Algorytm Różnicowy");
         switch (input.next()) {
             case "1" -> new MonteCarlo();
             case "2" -> new HookeJeeves();
@@ -24,6 +25,7 @@ public class Main {
             case "6" -> new SymulowaneWyzarzannie();
             case "7" -> new Genetyczny();
             case "8" -> new PSO();
+            case "9" -> new Roznicowy();
         }
     }
 }
