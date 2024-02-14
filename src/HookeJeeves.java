@@ -6,17 +6,18 @@ public class HookeJeeves {
         algorytm();
     }
 
-    private final double[] xStart = new double[4];          //punkt startowy, deklaracja wymiarów (x,y,z,...)
+    private final double[] xStart = new double[2];          //punkt startowy, deklaracja wymiarów (x,y,z,...)
     private final double[] x = new double[xStart.length];   //punkt, który będzie się poruszać, tyle samo współrzędnych co punkt startowy
     private double k = 1.5;                                 //krok
-    private final double e = 0.02;                          //dokładność rozwiązania
+    private final double e = 0.00002;                          //dokładność rozwiązania
 
     private double f(double[] x) {                          //funkcja f(x) = Σ (i+2)*xi^i
-        return IntStream.range(0, x.length).mapToDouble(i -> (i + 2) * Math.pow(x[i], (i))).sum();
+//        return IntStream.range(0, x.length).mapToDouble(i -> (i + 2) * Math.pow(x[i], (i))).sum();
+        return 2 * Math.pow(x[0] - 1.5, 2) + 2 * x[0] * x[1] + Math.pow(x[1] - 0.5, 2) - 3;
     }
 
     private void algorytm() {
-        Arrays.fill(xStart, 1);                 //początek z punktu (1,1,1,...)
+        Arrays.fill(xStart, 2);                 //początek z punktu (1,1,1,...)
         Arrays.setAll(x, i -> xStart[i]);
         do {
             krokProbny();                           //wykonanie kroku próbnego
@@ -50,10 +51,9 @@ public class HookeJeeves {
     }
 
     private void krokRoboczy() {
-        double v = k;                                                   //zapisz aktualną wartość kroku
         double[] tempArray = new double[x.length];                      //utwórz tymczasowy punkt, o współrzędnych x
         Arrays.setAll(tempArray, i -> x[i]);
-        Arrays.setAll(x, i -> xStart[i] + v * (x[i] - xStart[i]));      //wykonaj krok po wektorze o długości kroku
+        Arrays.setAll(x, i -> xStart[i] + 1.5 * (x[i] - xStart[i]));      //wykonaj krok po wektorze o długości kroku
         if (f(x) < f(tempArray)) k *= 1.25;                             //jeśli krok był udany zwiększ wartość kroku
         else {
             Arrays.setAll(x, i -> tempArray[i]);                        //jeśli nie przywróć poprzednie współrzędne
