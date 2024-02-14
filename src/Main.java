@@ -1,5 +1,6 @@
 import algorytmgenetyczny.Genetyczny;
 import pso.PSO;
+import steffensen.Steffensen;
 
 import java.util.Scanner;
 
@@ -16,6 +17,7 @@ public class Main {
         System.out.println("7. Algorytm genetyczny");
         System.out.println("8. PSO");
         System.out.println("9. Algorytm Różnicowy");
+        System.out.println("10. Steffensen");
         switch (input.next()) {
             case "1" -> new MonteCarlo();
             case "2" -> new HookeJeeves();
@@ -26,6 +28,7 @@ public class Main {
             case "7" -> new Genetyczny();
             case "8" -> new PSO();
             case "9" -> new Roznicowy();
+            case "10" -> new Steffensen();
         }
     }
 }
