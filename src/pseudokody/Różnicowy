@@ -9,9 +9,6 @@ procedure Roznicowy
     u = [size][dimensions]
     o = [size][dimensions]
     best = [dimensions]
-    F = 0.6
-    C = 0.4
-    e = 0.002
 
     for i from 0 to size - 1
         for j from 0 to dimensions - 1
@@ -30,12 +27,12 @@ procedure Roznicowy
                 i3 = randN(0, size)
             end while
             for j from 0 to dimensions - 1
-                u[i][j] = x[i1][j] + F * (x[i2][j] - x[i3][j])  (mutacja)
+                u[i][j] = x[i1][j] + 0.6 * (x[i2][j] - x[i3][j])  (mutacja)
             end for
         end for
         
         for i from 0 to size - 1  (krzyżowanie)
-            if randR(0,1) <= C
+            if randR(0,1) <= 0.4
                 for j from 0 to dimensions - 1
                     o[i][j] = u[i][j]
                 end for
