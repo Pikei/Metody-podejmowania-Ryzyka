@@ -1,0 +1,30 @@
+procedure f(x[])
+    return 2 * (x[0] - 1.5)^2 + 2 * x[0] * x[1] + (x[1] - 0.5)^2 - 3
+end procedure
+
+procedure SymulowaneWyzarzannie()
+    x = [2]
+    xNew = [2]
+    t = 1000
+    a = 0.03
+    e = 0.00002
+    delta = 0
+
+    for i from 0 to length(xNew) - 1
+        x[i] = 2    (inicjacja punktu startowego)
+    end for
+
+    while |0-t| > e
+        for i from 0 to 1000    (liczba wewnętrznych iteracji)
+            for j from 0 to length(xNew) - 1
+                xNew[j] = randR(x[j] - t, x[j] + t)    (wybór sąsiada)
+            end for
+            delta = f(xNew) - f(x)
+            if delta < 0 OR randR(0,1) < exp(-delta/t)
+                for j from 0 to length(xNew) - 1
+                    x[j] = xNew[j]
+                end for
+        end for
+        t = t * (1-a)
+    end while
+end procedure
