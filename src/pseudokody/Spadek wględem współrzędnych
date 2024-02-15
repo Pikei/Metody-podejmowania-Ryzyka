@@ -1,0 +1,37 @@
+procedure f(x[])
+    return 2 * (x[0] - 1.5)^2 + 2 * x[0] * x[1] + (x[1] - 0.5)^2 - 3
+end procedure
+
+procedure SpadekWWspolrzednych()
+    x = [2]
+    xNew = [2]
+    k = 0.01
+    count = 0
+
+    for i from 0 to length(x) - 1
+        x[i] = 2    (inicjacja punktu startowego)
+        xNew[i] = x[i]
+    end for
+
+    while count < length(x)
+        for i from 0 to length(x) - 1
+            xNew[i] = x[i] + k      (krok w jedną stronę)
+        end for
+        if f(x) < f(xNew)
+            for i from 0 to length(x) - 1
+                xNew[i] = x[i] - k      (próba kroku w drugą stronę)
+            end for
+            if f(x) < f(xNew)
+                count = count + 1   (jeśli nie wykonano żadnego kroku zwiększ licznik)
+            else
+                for i from 0 to length(x) - 1
+                    x[i] = xNew[i]   (jeśli krok był udany)
+                end for
+                count = 0
+        else
+            for i from 0 to length(x) - 1
+                x[i] = xNew[i]   (jeśli krok był udany)
+            end for
+            count = 0
+    end while
+end procedure
