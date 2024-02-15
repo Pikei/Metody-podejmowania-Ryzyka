@@ -1,6 +1,11 @@
 xStart = [100]
 k = 1.5
 e = 0.02
+
+procedure f(x[])
+    return 2 * (x[0] - 1.5)^2 + 2 * x[0] * x[1] + (x[1] - 0.5)^2 - 3
+end procedure
+
 procedure HookeJeeves()
     for i from 0 to length(xStart) - 1
         xStart[i] = 1
@@ -10,42 +15,33 @@ procedure HookeJeeves()
     e = 0.02
 
     while k > e do:
-        krokProbny()
-        krokRoboczy()
-        if f(x) < f(xStart)
-            xStart = x
-    end while
-end procedure
+        for i from 0 to length(x) - 1
+            x[i] = x[i] + k
+            if f(x) < f(xStart) (jeżeli krok był pomyślny)
+                k = v
+            else (próba wykonania kroku w przeciwną stronę)
+                x[i] = x[i] - (2 * k)
+                if f(x) < f(xStart)
+                    k = v
+                else (cofamy się do poprzedniego rozważanego punktu gdyż etap roboczy był nie pomyślny)
+                    x[i] = xStart[i]
+                    if k > e (krok nie jest jeszcze zbyt mały)
+                        k = k * 0.2
+                        i = i - 1
+                        else
+                            k = v
+        end for
 
-procedure krokProbny()
-    v = k
-    for i from 0 to length(x) - 1
-        x[i] += k
-        if f(x) < f(xStart)
-            k = v
-            continue
-        x[i] -= 2 * k
-        if f(x) < f(xStart)
-            k = v
-            continue
-        x[i] = xStart[i]
-        if k > e
-            k *= 0.2
-            i -= 1
+        tempArray = x
+        for i from 0 to length(x) - 1
+            x[i] = xStart[i] + 1.5 * (x[i] - xStart[i])
+        end for
+        if f(x) < f(tempArray)
+            k = k * 1.25
         else
-            k = v
-    end for
-end procedure
-
-procedure krokRoboczy()
-    v = k
-    tempArray = copy(x)
-    for i from 0 to length(x) - 1
-        x[i] = xStart[i] + v * (x[i] - xStart[i])
-    end for
-    if f(x) < f(tempArray)
-        k = k * 1.25
-    else
-        x = tempArray
-        k = k * 0.2
+            x = tempArray
+            k = k * 0.2
+            if f(x) < f(xStart)
+                xStart = x
+    end while
 end procedure
