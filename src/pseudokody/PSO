@@ -1,0 +1,57 @@
+procedure f(x[])
+    return 2 * (x[0] - 1.5)^2 + 2 * x[0] * x[1] + (x[1] - 0.5)^2 - 3
+end procedure
+
+procedure PSO() {
+    dimensions = 2
+    swarmSize = 100
+    swarm = [swarmSize][dimensions]
+    pBest = [swarmSize][dimensions]
+    v = [swarmSize][dimensions]
+    gBest = [dimensions]
+    c = [dimensions]
+    w = 0.8
+    e = 0.002
+
+    for i from 0 to dimensions - 1
+            c[i] = 0.1
+    end for
+
+    for i from 0 to swarmSize - 1
+        for j from 0 to dimensions - 1
+            swarm[i][j] = rand(-100, 100)
+            pBest[i][j] = swarm[i][j]
+        end for
+    end for
+
+    until (warunek stopu)
+        for i from 0 to dimensions - 1
+            gBest[i] = swarm[0][i]
+        end for
+        for i from 0 to swarmSize - 1 (pętla szukająca globalnego najlepszego wyniku)
+            if f(swarm[i]) < f(gBest)
+                for j from 0 to dimensions - 1
+                    gBest[j] = swarm[i][j]
+                end for
+        end for
+
+        for i from 0 to swarmSize - 1 (pętla szukająca personalnych najlepszych wyników)
+            if f(swarm[i]) < f(pBest[i])
+                for j from 0 to dimensions - 1
+                    pBest[i][j] = swarm[i][j]
+                end for
+        end for
+
+        for i from 0 to swarmSize - 1 (obliczenie wektorów dla każej cząsteczki)
+            for j from 0 to dimensions - 1
+                v[i][j] = w * v[i][j] + c[j] * rand(1) * (pBest[i][j] - swarm[i][j]) + c[j] * rand(1) * (gBest[j] - swarm[i][j])
+            end for
+        end for
+
+        for i from 0 to swarmSize - 1 (przemieszczenie każej cząsteczki)
+            for j from 0 to dimensions - 1
+                swarm[i][j] = swarm[i][j] + v[i][j]
+            end for
+        end for
+    end until
+end procedure
