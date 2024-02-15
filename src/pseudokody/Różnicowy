@@ -1,0 +1,64 @@
+procedure f(x[])
+    return 2 * (x[0] - 1.5)^2 + 2 * x[0] * x[1] + (x[1] - 0.5)^2 - 3
+end procedure
+
+procedure Roznicowy
+    dimensions = 2
+    size = 100
+    x = [size][dimensions]
+    u = [size][dimensions]
+    o = [size][dimensions]
+    best = [dimensions]
+    F = 0.6
+    C = 0.4
+    e = 0.002
+
+    for i from 0 to size - 1
+        for j from 0 to dimensions - 1
+            x[i][j] = randR(-100, 100)
+        end for
+    end for
+
+    until (warunek stopu)
+        for i from 0 to size - 1 
+            i1 = randN(0, size)
+            i2 = randN(0, size)
+            i3 = randN(0, size)
+            while i1==i2 AND i2==i3  (Selekcja)
+                i1 = randN(0, size)
+                i2 = randN(0, size)
+                i3 = randN(0, size)
+            end while
+            for j from 0 to dimensions - 1
+                u[i][j] = x[i1][j] + F * (x[i2][j] - x[i3][j])  (mutacja)
+            end for
+        end for
+        
+        for i from 0 to size - 1  (krzyżowanie)
+            if randR(0,1) <= C
+                for j from 0 to dimensions - 1
+                    o[i][j] = u[i][j]
+                end for
+            else
+                for j from 0 to dimensions - 1
+                    o[i][j] = x[i][j]
+                end for
+            if f(o[i]) < f(x[i])
+                for j from 0 to dimensions - 1
+                    x[i][j] = o[i][j]
+                end for
+        end for
+        
+        for j from 0 to dimensions - 1
+            best[j] = x[0][j]
+        end for
+        
+        for i from 0 to size - 1  (znalezienie najlepszego wyniku)
+            if f(x[i]) < f(best)
+                for j from 0 to dimensions - 1
+                    best[j] = x[0][j]
+                end for
+        end for
+    end until
+end procedure
+    
